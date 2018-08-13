@@ -12,7 +12,7 @@ public class BaseLogger extends Logger {
    PrintStream out = new PrintStream(
          new BufferedOutputStream(
                new FileOutputStream(FileDescriptor.out),
-               128),
+               1024),
          true);
 
 

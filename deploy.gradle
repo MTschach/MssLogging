@@ -1,0 +1,124 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+//apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+def artifact = new Properties()
+artifact.load(new FileInputStream("deploy.settings"))
+
+version=artifact.version
+group=artifact.groupId
+
+install {
+    repositories.mavenInstaller {
+    pom.project {
+            packaging 'aar'
+            groupId 'Mss'
+            artifactId 'MssLogging'
+            version '0.1.1'
+            name 'MssLogging' // pom.project.name must be same as bintray.pkg.name
+            // url artifact.siteUrl
+            inceptionYear '2015' // HARDCODED
+            licenses {
+                license { // HARDCODED
+                    name 'Apache 2'
+                    url 'https://www.gnu.org/licenses/gpl.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                    connection artifact.gitUrl
+                    developerConnection artifact.gitUrl
+                    url artifact.siteUrl
+            }
+        }
+    }
+}
+
+
+def pomConfig = {
+	licenses {
+		license {
+			name "The Apache Software License, Version 2.0"
+			url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+			distribution "repo"
+		}
+	}
+	
+	developers {
+		developer {
+			id "mtschach"
+			name "Michael Tschach"
+			email "MichaelTschach@gmx.net"
+		}
+	}
+	
+	scm {
+		url "https://github.com/mtschach/MssUtils"
+	}
+}
+
+Properties properties = new Properties()
+File propFile = "${System.properties['user.home']}${File.separator}.gradle${File.separator}bintray.properties" as File
+properties.load(propFile.newDataInputStream())
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId 'Mss'
+            artifactId 'MssLogging'
+            version '0.1.1'
+            
+            pom.withXml {
+            	def root = asNode()
+            	root.appendNode('description', 'logging utilities')
+            	root.appendNode('name', 'MssLogging')
+            	root.appendNode('url', 'https://github.com/mtschach/Mss/MssLogging')
+            	root.children().last() + pomConfig
+				}
+        }
+    }
+}
+
+bintray {
+	user = properties.getProperty("bintray.user")
+	key = properties.getProperty("bintray.apikey")
+	
+    publications = ['MyPublication']
+
+    configurations = ['archives']
+    pkg {
+        repo = "Mss"
+        name = 'MssLogging'
+        vcsUrl = 'https://github.com/MTschach/MssLogging.git'
+        licenses = ['Apache-2.0']
+        publish = true
+        version {
+            name = '0.1.1'
+            desc = 'MssLogging V0.1.1'
+            released = new Date()
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
