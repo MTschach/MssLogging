@@ -1,23 +1,21 @@
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
-//apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 def artifact = new Properties()
 artifact.load(new FileInputStream("deploy.settings"))
 
-version=artifact.version
-group=artifact.groupId
+//version=artifact.version
+//group=artifact.groupId
 
 install {
     repositories.mavenInstaller {
     pom.project {
             packaging 'aar'
-            groupId 'Mss'
-            artifactId 'MssLogging'
-            version '0.1.1'
-            name 'MssLogging' // pom.project.name must be same as bintray.pkg.name
-            // url artifact.siteUrl
+            groupId artifact.groupdId
+            artifactId artifact.artifactId
+            version artifact.version
+            name artifact.artifactId // pom.project.name must be same as bintray.pkg.name
             inceptionYear '2015' // HARDCODED
             licenses {
                 license { // HARDCODED
@@ -66,9 +64,9 @@ publishing {
     publications {
         MyPublication(MavenPublication) {
             from components.java
-            groupId 'Mss'
-            artifactId 'MssLogging'
-            version '0.1.1'
+            groupId artifact.groupId
+            artifactId artifact.artifactId
+            version artifact.version
             
             pom.withXml {
             	def root = asNode()
@@ -95,8 +93,8 @@ bintray {
         licenses = ['Apache-2.0']
         publish = true
         version {
-            name = '0.1.1'
-            desc = 'MssLogging V0.1.1'
+            name = version
+            desc = 'MssLogging V0.1.2'
             released = new Date()
         }
     }

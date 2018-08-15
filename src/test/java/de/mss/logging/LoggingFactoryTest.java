@@ -1,8 +1,10 @@
 package de.mss.logging;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Set;
 
@@ -11,8 +13,8 @@ import org.junit.Test;
 
 public class LoggingFactoryTest {
 
-   BaseLogger system           = new BaseLogger();
-   String     nameSystemLogger = "system";
+   static BaseLogger system           = new BaseLogger();
+   String            nameSystemLogger = "system";
 
 
    @Before
@@ -62,19 +64,19 @@ public class LoggingFactoryTest {
 
    @Test
    public void testIsNotInitialized() {
-      assertNull("Logger not initialized", LoggingFactory.isInitialized("testlogger"));
+      assertFalse("Logger not initialized", LoggingFactory.isInitialized("testlogger"));
    }
 
 
    @Test
-   public void testShutdonw() {
+   public void testShutdown() {
       String loggername = "testlogger";
       LoggingFactory.createInstance(loggername, new BaseLogger());
 
-      assertNotNull("Logger initialized", LoggingFactory.isInitialized(loggername));
+      assertTrue("Logger initialized", LoggingFactory.isInitialized(loggername));
 
       LoggingFactory.shutdownInstance(loggername);
 
-      assertNull("Logger shut down", LoggingFactory.isInitialized(loggername));
+      assertFalse("Logger shut down", LoggingFactory.isInitialized(loggername));
    }
 }
