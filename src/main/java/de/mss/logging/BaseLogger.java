@@ -21,6 +21,23 @@ public class BaseLogger extends Logger {
    }
 
 
+   public BaseLogger(String name) {
+      super(name, null);
+   }
+
+
+   public BaseLogger(Level l) {
+      super(null, null);
+      setLevel(l);
+   }
+
+
+   public BaseLogger(String name, Level l) {
+      super(name, null);
+      setLevel(l);
+   }
+
+
    protected void doLog(LogEntry le) {
       out.println(le.toString());
    }
