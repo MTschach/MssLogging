@@ -5,14 +5,13 @@ apply plugin: 'com.jfrog.bintray'
 def artifact = new Properties()
 artifact.load(new FileInputStream("deploy.settings"))
 
-//version=artifact.version
-//group=artifact.groupId
+group = artifact.groupId
 
 install {
     repositories.mavenInstaller {
     pom.project {
             packaging 'aar'
-            groupId artifact.groupdId
+            groupId artifact.groupId
             artifactId artifact.artifactId
             version artifact.version
             name artifact.artifactId // pom.project.name must be same as bintray.pkg.name
@@ -71,7 +70,7 @@ publishing {
             pom.withXml {
             	def root = asNode()
             	root.appendNode('description', 'logging utilities')
-            	root.appendNode('name', 'MssLogging')
+            	root.appendNode('name', artifact.artifactId)
             	root.appendNode('url', 'https://github.com/mtschach/Mss/MssLogging')
             	root.children().last() + pomConfig
 				}
@@ -87,14 +86,16 @@ bintray {
 
     configurations = ['archives']
     pkg {
-        repo = "Mss"
-        name = 'MssLogging'
-        vcsUrl = 'https://github.com/MTschach/MssLogging.git'
+        repo = artifact.groupId
+        name = artifact.artifactId
+        desc = artifact.artifactId+' V'+artifact.version
+        //vcsUrl = 'https://github.com/MTschach/MssLogging.git'
         licenses = ['Apache-2.0']
         publish = true
+        publicDownloadNumbers = true
         version {
-            name = version
-            desc = 'MssLogging V0.1.2'
+            name = artifact.artifactId
+            desc = artifact.artifactId+' V'+artifact.version
             released = new Date()
         }
     }

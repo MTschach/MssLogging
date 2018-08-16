@@ -9,6 +9,10 @@
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'java-library'
 
+def artifact = new Properties()
+artifact.load(new FileInputStream("deploy.settings"))
+
+version = artifact.version
 
 buildscript {
     repositories {
