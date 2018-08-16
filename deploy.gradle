@@ -94,7 +94,7 @@ bintray {
         publish = true
         publicDownloadNumbers = true
         version {
-            name = artifact.artifactId
+            name = artifact.version
             desc = artifact.artifactId+' V'+artifact.version
             released = new Date()
         }
