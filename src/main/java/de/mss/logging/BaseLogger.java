@@ -43,6 +43,46 @@ public class BaseLogger extends Logger {
    }
 
 
+   public static Level getLevelAll() {
+      return Level.ALL;
+   }
+
+
+   public static Level getLevelDebug() {
+      return Level.FINE;
+   }
+
+
+   public static Level getLevelError() {
+      return Level.SEVERE;
+   }
+
+
+   public static Level getLevelInfo() {
+      return Level.INFO;
+   }
+
+
+   public static Level getLevelNull() {
+      return Level.OFF;
+   }
+
+
+   public static Level getLevelVerbose() {
+      return Level.FINER;
+   }
+
+
+   public static Level getLevelVerbose2() {
+      return Level.FINEST;
+   }
+
+
+   public static Level getLevelWarning() {
+      return Level.WARNING;
+   }
+
+
    public void log(String uniqueLoggingId, Level level, String msg) {
       if (!isLoggable(level))
          return;
