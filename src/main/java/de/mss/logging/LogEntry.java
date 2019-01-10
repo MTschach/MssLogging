@@ -106,6 +106,8 @@ public class LogEntry {
       if (this.logEntry != null)
          sb.append(this.logEntry.toString());
 
+      sb.append(LINE_BREAK);
+
       return sb.toString();
    }
 }
