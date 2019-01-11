@@ -81,30 +81,31 @@ public class LogEntry {
    }
 
 
+   @Override
    public String toString() {
       StringBuilder sb = new StringBuilder();
 
-      SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+      SimpleDateFormat sdf = new SimpleDateFormat(this.dateFormat);
 
-      sb.append(fieldSeparator + sdf.format(new java.util.Date()));
+      sb.append(sdf.format(new java.util.Date()));
 
       if (this.uniqueLoggingId != null)
-         sb.append(fieldSeparator + this.uniqueLoggingId);
-
-      if (this.throwable != null) {
-
-         for (StackTraceElement line : this.throwable.getStackTrace())
-            sb.append(fieldSeparator + line.toString() + LINE_BREAK);
-      }
+         sb.append(this.fieldSeparator + this.uniqueLoggingId);
 
       if (this.msgList != null) {
-         for (String line : msgList) {
-            sb.append(fieldSeparator + line);
+         for (String line : this.msgList) {
+            sb.append(this.fieldSeparator + line.replaceAll("\r", "\\r").replaceAll("\n", "\\n"));
          }
       }
 
       if (this.logEntry != null)
          sb.append(this.logEntry.toString());
+
+      if (this.throwable != null) {
+
+         for (StackTraceElement line : this.throwable.getStackTrace())
+            sb.append(LINE_BREAK + this.uniqueLoggingId + this.fieldSeparator + line.toString());
+      }
 
       sb.append(LINE_BREAK);
 
