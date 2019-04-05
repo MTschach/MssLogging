@@ -3,15 +3,19 @@ package de.mss.logging;
 import java.util.HashMap;
 import java.util.Set;
 
-public class LoggingFactory {
-
-   private static HashMap<String, BaseLogger> loggers = new HashMap<>();
-
-
-   private LoggingFactory() {}
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
-   public static BaseLogger getLogger(String name) {
+public class LoggerFactory {
+
+   private static HashMap<String, Logger> loggers = new HashMap<>();
+
+
+   private LoggerFactory() {}
+
+
+   public static Logger getLogger(String name) {
       if (!loggers.containsKey(name))
          return null;
 
@@ -19,9 +23,12 @@ public class LoggingFactory {
    }
 
 
-   public static BaseLogger createInstance(String name, BaseLogger l) {
+   public static Logger createInstance(String name, String log4jConfigFile) {
       if (!loggers.containsKey(name))
+      {
+         Logger l = LogManager.getLogger(name);
          loggers.put(name, l);
+      }
 
       return loggers.get(name);
    }

@@ -19,19 +19,19 @@ public class LoggingFactoryTest {
 
    @Before
    public void setUp() {
-      Set<String> loggers = LoggingFactory.getLoggerNames();
+      Set<String> loggers = LoggerFactory.getLoggerNames();
 
       for (String name : loggers)
          if (!nameSystemLogger.equals(name))
-            LoggingFactory.shutdownInstance(name);
+            LoggerFactory.shutdownInstance(name);
 
-      LoggingFactory.createInstance(nameSystemLogger, system);
+      LoggerFactory.createInstance(nameSystemLogger, system);
    }
 
 
    @Test
    public void testGetUnknownLogger() {
-      BaseLogger logger = LoggingFactory.getLogger("unknown");
+      BaseLogger logger = LoggerFactory.getLogger("unknown");
 
       assertNull("Unknown Logger", logger);
    }
@@ -39,9 +39,9 @@ public class LoggingFactoryTest {
 
    @Test
    public void testGetSystemLogger() {
-      LoggingFactory.createInstance("info", new BaseLogger());
+      LoggerFactory.createInstance("info", new BaseLogger());
 
-      BaseLogger logger = LoggingFactory.getLogger(nameSystemLogger);
+      BaseLogger logger = LoggerFactory.getLogger(nameSystemLogger);
 
       assertEquals("Systemlogger", system, logger);
    }
@@ -50,7 +50,7 @@ public class LoggingFactoryTest {
    @Test
    public void testCreateInstance() {
       BaseLogger logger = new BaseLogger();
-      BaseLogger logger1 = LoggingFactory.createInstance("testlogger", logger);
+      BaseLogger logger1 = LoggerFactory.createInstance("testlogger", logger);
 
       assertEquals("Logger", logger, logger1);
    }
@@ -58,25 +58,25 @@ public class LoggingFactoryTest {
 
    @Test
    public void testIsInitialized() {
-      assertNotNull("Logger initialized", LoggingFactory.isInitialized(nameSystemLogger));
+      assertNotNull("Logger initialized", LoggerFactory.isInitialized(nameSystemLogger));
    }
 
 
    @Test
    public void testIsNotInitialized() {
-      assertFalse("Logger not initialized", LoggingFactory.isInitialized("testlogger"));
+      assertFalse("Logger not initialized", LoggerFactory.isInitialized("testlogger"));
    }
 
 
    @Test
    public void testShutdown() {
       String loggername = "testlogger";
-      LoggingFactory.createInstance(loggername, new BaseLogger());
+      LoggerFactory.createInstance(loggername, new BaseLogger());
 
-      assertTrue("Logger initialized", LoggingFactory.isInitialized(loggername));
+      assertTrue("Logger initialized", LoggerFactory.isInitialized(loggername));
 
-      LoggingFactory.shutdownInstance(loggername);
+      LoggerFactory.shutdownInstance(loggername);
 
-      assertFalse("Logger shut down", LoggingFactory.isInitialized(loggername));
+      assertFalse("Logger shut down", LoggerFactory.isInitialized(loggername));
    }
 }
